@@ -12,6 +12,9 @@ struct ContentView: View {
     @State private var showScore: Bool = false
     @State private var scoreTitle: String = ""
     @State private var scoreCount: Int = 0
+    @State private var alertMessage: String = ""
+    @State private var roundCount: Int = 0
+    @State private var newGame: Bool = false
     
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Russia", "Spain", "UK", "US"]
         .shuffled() // to randomize the array each session
@@ -69,7 +72,12 @@ struct ContentView: View {
         .alert(scoreTitle, isPresented: $showScore) {
             Button("Continue", action: askQuestion)
         } message: {
-            Text("Your score is \(scoreCount)")
+            Text("\(alertMessage)")
+        }
+        .alert("Game Over", isPresented: $newGame) {
+            Button("Continue", action: askQuestion)
+        } message: {
+            Text("Your final score was \(scoreCount)")
         }
     }
     
@@ -77,16 +85,34 @@ struct ContentView: View {
         if number == correctAnswer {
             scoreTitle = "Correct"
             scoreCount += 1
+            alertMessage = "Your score is \(scoreCount)"
         } else {
             scoreTitle = "Wrong"
+            alertMessage = "That's the flag of \(countries[number])"
         }
         
         showScore = true
+        roundCount += 1
+        resetAlert()
+        resetGame()
     }
     
     func askQuestion() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
+    }
+    
+    func resetAlert() {
+        if roundCount == 8 {
+            newGame = true
+        }
+    }
+    
+    func resetGame() {
+        if roundCount == 8 {
+            scoreCount = 0
+            roundCount = 0
+        }
     }
     
 }
