@@ -75,7 +75,7 @@ struct ContentView: View {
             Text("\(alertMessage)")
         }
         .alert("Game Over", isPresented: $newGame) {
-            Button("Continue", action: askQuestion)
+            Button("Continue", action: resetGame)
         } message: {
             Text("Your final score was \(scoreCount)")
         }
@@ -94,7 +94,6 @@ struct ContentView: View {
         showScore = true
         roundCount += 1
         resetAlert()
-        resetGame()
     }
     
     func askQuestion() {
@@ -112,6 +111,7 @@ struct ContentView: View {
         if roundCount == 8 {
             scoreCount = 0
             roundCount = 0
+            askQuestion()
         }
     }
     
