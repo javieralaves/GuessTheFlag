@@ -19,28 +19,52 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            LinearGradient(gradient: Gradient(colors: [.blue, .black]), startPoint: .top, endPoint: .bottom)
-                .ignoresSafeArea()
-            VStack (spacing: 30) {
-                VStack {
-                    Text("Tap the flag of")
-                        .font(.headline.weight(.heavy))
-                    Text(countries[correctAnswer])
-                        .font(.largeTitle.weight(.semibold))
-                }
-                .foregroundStyle(.white)
-                
-                ForEach(0..<3) { number in
-                    Button {
-                        flagTapped(number)
-                    } label: {
-                        Image(countries[number])
-                            .renderingMode(.original)
-                            .clipShape(Capsule())
-                            .shadow(radius: 5)
+            RadialGradient(stops: [
+                .init(color: Color(red: 0.1, green: 0.2, blue: 0.45), location: 0.3),
+                .init(color: Color(red: 0.76, green: 0.15, blue: 0.26), location: 0.3)
+            ], center: .top, startRadius: 200, endRadius: 700)
+            .ignoresSafeArea()
+
+            VStack {
+                Spacer()
+                Text("Guess the Flag")
+                    .font(.largeTitle.bold())
+                    .foregroundStyle(.white)
+                VStack (spacing: 15) {
+                    VStack {
+                        Text("Tap the flag of")
+                            .foregroundStyle(.secondary)
+                            .font(.headline.weight(.heavy))
+                        Text(countries[correctAnswer])
+                            .font(.largeTitle.weight(.semibold))
+                    }
+                    
+                    ForEach(0..<3) { number in
+                        Button {
+                            flagTapped(number)
+                        } label: {
+                            Image(countries[number])
+                                .renderingMode(.original)
+                                .clipShape(Capsule())
+                                .shadow(radius: 5)
+                        }
                     }
                 }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 20)
+                .background(.thinMaterial)
+                .clipShape(RoundedRectangle(cornerRadius: 20))
+                
+                Spacer()
+                Spacer()
+                
+                Text("Score: \(scoreCount)")
+                    .foregroundStyle(.white)
+                    .font(.title.bold())
+                
+                Spacer()
             }
+            .padding()
         }
         .alert(scoreTitle, isPresented: $showScore) {
             Button("Continue", action: askQuestion)
