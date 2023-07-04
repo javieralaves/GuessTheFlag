@@ -7,19 +7,6 @@
 
 import SwiftUI
 
-struct FlagImage: View {
-    
-    let name: String
-    
-    var body: some View {
-        Image(name)
-            .renderingMode(.original)
-            .clipShape(Capsule())
-            .shadow(radius: 5)
-    }
-    
-}
-
 struct ContentView: View {
     
     @State private var showScore: Bool = false
